@@ -1,0 +1,14 @@
+# Best-effort import-based dependency draft; review before publishing.
+# Versions reflect this environment, not a verified clean installation.
+jieba==0.42.1
+pytest==9.1.1
+python-dotenv==1.2.3
+rank-bm25==0.2.2
+
+# Verified direct import names missing from the first draft.
+fastapi==0.142.2
+httpx==0.28.1
+numpy==2.2.6
+openai==3.19.2
+pydantic==2.13.5
+uvicorn==0.54.0

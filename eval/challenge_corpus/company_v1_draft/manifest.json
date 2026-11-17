@@ -1,0 +1,73 @@
+{
+  "name": "company_retrieval_challenge_v1_draft",
+  "status": "draft_needs_human_review",
+  "original_documents": 3,
+  "distractor_documents": 10,
+  "files": [
+    {
+      "name": "account_policy.md",
+      "type": "original",
+      "sha256": "30479417638f3a292225bb8f42a85b6974f00fce6babe61a5ffb88c4fe1cd471"
+    },
+    {
+      "name": "business_trip_request.md",
+      "type": "synthetic_distractor",
+      "sha256": "687743a9e85351964df1c3deee9c218bb3e5f959ee15ca7479d3c39acf735c7d"
+    },
+    {
+      "name": "candidate_transport_subsidy.md",
+      "type": "synthetic_distractor",
+      "sha256": "aeb464e403ab2a84d6efcf8e716cade61ef1c619c08bfc072fe11da99049697e"
+    },
+    {
+      "name": "compensatory_leave_carryover.md",
+      "type": "synthetic_distractor",
+      "sha256": "23b53d28702a7ae667e1b2eb6d9697560d625671905b775c7d1b55ecf9fbbbe7"
+    },
+    {
+      "name": "equipment_repair.md",
+      "type": "synthetic_distractor",
+      "sha256": "2fd05e4f0bc79d81c1ec015dd0b79573ecc6beca47818aff08294bf055e22f44"
+    },
+    {
+      "name": "external_staff_absence.md",
+      "type": "synthetic_distractor",
+      "sha256": "841f06d45dddf0df2d1c87f005db96041879ffc02a1499d2c42d2ef39e8e6c0f"
+    },
+    {
+      "name": "external_test_account.md",
+      "type": "synthetic_distractor",
+      "sha256": "812f7b7702732408eb821b4677b4110cac015a932a4f93ec9d703ed6c36c324e"
+    },
+    {
+      "name": "leave_policy.md",
+      "type": "original",
+      "sha256": "6f069d14ef80db24e418768de6de149e36ada772d18a9c10f3bf870280ca8c06"
+    },
+    {
+      "name": "meeting_room_booking.md",
+      "type": "synthetic_distractor",
+      "sha256": "d5cdbcc3dedde09dcec6308f0415328e1dfb220507f31e3dfe86c7a7d20e657f"
+    },
+    {
+      "name": "reimbursement_policy.md",
+      "type": "original",
+      "sha256": "cd6f25d4dc42b6f5f04321a143b0b28b9979d0ab5aeae4a8b40556be3cce314a"
+    },
+    {
+      "name": "supplier_invoice.md",
+      "type": "synthetic_distractor",
+      "sha256": "339eca10c7304fd91626c0223fd2b3d86d091b941bc1d1127d26bf63dc4618f0"
+    },
+    {
+      "name": "temporary_shared_access.md",
+      "type": "synthetic_distractor",
+      "sha256": "956a19064a8a0b253ce19124fbc2880deb0369db7c989516b6c7e7fda1fb4ef8"
+    },
+    {
+      "name": "training_attendance.md",
+      "type": "synthetic_distractor",
+      "sha256": "38a1f9783981950e12c984b49ce9a908c2f5621070984f679658f20f1d631425"
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "dataset": "eval/datasets/company_dev_v1.jsonl",
+  "dataset_sha256": "65954bf64b6fe826592b0b5b1fdf7c55f7700074b4f2fe1d2d0b6d6bac1b953d",
+  "chunks_path": "eval/challenge_corpus/company_v1_draft/index/rag_chunks.json",
+  "chunks_sha256": "c1e8bbf8c64facceeadfbb20e36e26653f9858cc67152e60550bc5b655940770",
+  "chunk_count": 16,
+  "total_cases": 16,
+  "total_gold_facts": 16,
+  "matched_gold_facts": 16,
+  "unmatched_gold_facts": 0,
+  "label_status": "auto_migrated_needs_human_review",
+  "cases": [
+    {
+      "id": "company_dev_001",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "正式员工每个自然年度享有5个工作日基础年假",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_002",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "年假原则上至少提前2个工作日申请",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_003",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "年假申请经直属主管批准后生效",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-0",
+            "leave_policy.md::chunk-1"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-0",
+        "leave_policy.md::chunk-1"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_004",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "应及时通知直属主管",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-1"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-1"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_005",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "普通请假由直属主管审批",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-1"
+          ]
+        },
+        {
+          "fact": "连续请假超过3个工作日还需人力资源部门确认",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-1"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-1"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_006",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "应在费用发生后15个自然日内提交报销申请",
+          "source_file": "reimbursement_policy.md",
+          "acceptable_chunk_ids": [
+            "reimbursement_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "reimbursement_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_007",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "需要费用说明、有效票据和相应审批记录",
+          "source_file": "reimbursement_policy.md",
+          "acceptable_chunk_ids": [
+            "reimbursement_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "reimbursement_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_008",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "材料不完整的申请可能被退回",
+          "source_file": "reimbursement_policy.md",
+          "acceptable_chunk_ids": [
+            "reimbursement_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "reimbursement_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_009",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "先由直属主管审批，再由财务部门审核",
+          "source_file": "reimbursement_policy.md",
+          "acceptable_chunk_ids": [
+            "reimbursement_policy.md::chunk-1"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "reimbursement_policy.md::chunk-1"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_010",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "人力资源部门提出申请，信息技术部门创建账号",
+          "source_file": "account_policy.md",
+          "acceptable_chunk_ids": [
+            "account_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "account_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_011",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "资料齐全时原则上1个工作日内开通基础办公账号",
+          "source_file": "account_policy.md",
+          "acceptable_chunk_ids": [
+            "account_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "account_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_012",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "特殊权限由直属主管和系统负责人共同审批",
+          "source_file": "account_policy.md",
+          "acceptable_chunk_ids": [
+            "account_policy.md::chunk-1"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "account_policy.md::chunk-1"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_013",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "年假原则上至少提前2个工作日申请",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-0"
+          ]
+        },
+        {
+          "fact": "费用发生后15个自然日内提交报销",
+          "source_file": "reimbursement_policy.md",
+          "acceptable_chunk_ids": [
+            "reimbursement_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-0",
+        "reimbursement_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_014",
+      "expected_behavior": "refuse",
+      "fact_labels": [],
+      "relevant_chunk_ids": [],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_015",
+      "expected_behavior": "refuse",
+      "fact_labels": [],
+      "relevant_chunk_ids": [],
+      "all_facts_mapped": true
+    },
+    {
+      "id": "company_dev_016",
+      "expected_behavior": "answer",
+      "fact_labels": [
+        {
+          "fact": "年假原则上至少提前2个工作日申请",
+          "source_file": "leave_policy.md",
+          "acceptable_chunk_ids": [
+            "leave_policy.md::chunk-0"
+          ]
+        }
+      ],
+      "relevant_chunk_ids": [
+        "leave_policy.md::chunk-0"
+      ],
+      "all_facts_mapped": true,
+      "subquestion_labels": [
+        {
+          "subquestion": "年假需要提前多久申请？",
+          "answerability": "supported",
+          "expected_answer": "员工原则上至少提前2个工作日提交年假申请",
+          "supporting_chunk_ids": [
+            "leave_policy.md::chunk-0"
+          ]
+        },
+        {
+          "subquestion": "没有用完的年假能否结转到下一年？",
+          "answerability": "not_specified",
+          "expected_answer": "当前制度未规定未休年假的结转规则，无法据此判断能否结转",
+          "supporting_chunk_ids": []
+        }
+      ],
+      "response_requirement": "必须回答有证据支持的年假申请时间；必须明确说明未休年假结转规则未规定；不得将未规定解释为允许或禁止结转。"
+    }
+  ],
+  "unmatched": [],
+  "source_labels": "eval/results/ablation/company_dev_v1_relevance_audit_20261117T110549_555511Z.json",
+  "source_labels_sha256": "7627d22a5fae419efa317a151ab8cf09c1339d575242fef6f843d20452733467",
+  "index_sha256": "d39e8f180ff8c69eac25790d82f5d54c59b5c87170d99f8bed8d49ab2608690a",
+  "challenge_name": "company_challenge_v1_draft",
+  "review_required": {
+    "gold_facts": true,
+    "new_distractor_scope": true,
+    "refusal_cases": [
+      "company_dev_014",
+      "company_dev_015"
+    ],
+    "note": "原始证据已验证，但新增模拟文档可能产生语义干扰或改变拒答条件。正式评测前必须进行人工审核。"
+  },
+  "added_chunk_ids": [
+    "business_trip_request.md::chunk-0",
+    "candidate_transport_subsidy.md::chunk-0",
+    "compensatory_leave_carryover.md::chunk-0",
+    "equipment_repair.md::chunk-0",
+    "external_staff_absence.md::chunk-0",
+    "external_test_account.md::chunk-0",
+    "meeting_room_booking.md::chunk-0",
+    "supplier_invoice.md::chunk-0",
+    "temporary_shared_access.md::chunk-0",
+    "training_attendance.md::chunk-0"
+  ]
+}

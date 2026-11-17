@@ -1,0 +1,43 @@
+{
+  "sample_count": 6,
+  "correct_count": 6,
+  "accuracy": 1.0,
+  "cases": [
+    {
+      "claim": "设置 max_steps 可以限制一次任务中的最大模型判断轮数",
+      "expected": "supported",
+      "predicted": "supported",
+      "reason": "evidence 明确提到 '可以设置 max_steps，限制一次任务中的最大模型判断轮数'"
+    },
+    {
+      "claim": "设置 max_steps 可以防止 Agent 无限调用工具",
+      "expected": "supported",
+      "predicted": "supported",
+      "reason": "evidence 明确提到 '为了避免 Agent 无限调用工具，可以设置 max_steps'"
+    },
+    {
+      "claim": "大模型负责生成工具名称和参数，Python 负责执行真实函数",
+      "expected": "supported",
+      "predicted": "supported",
+      "reason": "evidence 明确提到 '大模型只负责生成工具名称和参数，Python 负责执行真实函数'"
+    },
+    {
+      "claim": "设置 max_steps 可以让 Agent 推理速度提高 50%",
+      "expected": "unsupported",
+      "predicted": "unsupported",
+      "reason": "evidence 未提及任何关于推理速度或 50% 提升的信息"
+    },
+    {
+      "claim": "max_steps 越大，模型回答准确率一定越高",
+      "expected": "unsupported",
+      "predicted": "unsupported",
+      "reason": "evidence 未提及 max_steps 与准确率的关系，也未声称 '一定越高'"
+    },
+    {
+      "claim": "Agent 的工具函数由大模型直接执行，不需要 Python",
+      "expected": "unsupported",
+      "predicted": "unsupported",
+      "reason": "evidence 明确指出 'Python 负责执行真实函数'，与该 claim 矛盾"
+    }
+  ]
+}
