@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any
 
 from openai import OpenAI
@@ -12,7 +13,9 @@ from agent_core.prompts import SYSTEM_PROMPT
 from storage.trace_context import record_model_usage
 
 # 1. 加上这一行，让它自动读取根目录下的 .env 文件
-load_dotenv()
+load_dotenv(
+    dotenv_path=Path(__file__).resolve().parents[1] / ".env"
+)
 
 
 class QwenClient:
@@ -20,7 +23,7 @@ class QwenClient:
 
     def __init__(
         self,
-        model: str = "qwen-plus", # 如果报错，可以换成 "qwen3.7-plus"
+        model: str | None = None,
         system_prompt: str = SYSTEM_PROMPT,
     ) -> None:
         api_key = os.getenv("DASHSCOPE_API_KEY")
@@ -31,16 +34,25 @@ class QwenClient:
                 "请检查项目根目录下是否有 .env 文件，并配置了正确的 Key。"
             )
 
-        self.model = model
+        base_url = (
+            os.getenv("QWEN_BASE_URL")
+            or os.getenv("DASHSCOPE_BASE_URL")
+        )
+
+        if not base_url:
+            raise RuntimeError(
+                "缺少 QWEN_BASE_URL 或 DASHSCOPE_BASE_URL"
+            )
+
+        self.model = (
+            model or os.getenv("QWEN_MODEL") or "qwen-plus"
+        )
         self.system_prompt = system_prompt
 
-        # 2. 恢复为你截图里的专属地址
+        # 由环境变量选择模型服务地址
         self.client = OpenAI(
             api_key=api_key,
-            base_url=(
-                "https://ws-zoy7x6p4hsyfiruk.cn-beijing.maas.aliyuncs.com"
-                "/compatible-mode/v1"
-            ),
+            base_url=base_url,
         )
 
     def create_completion(

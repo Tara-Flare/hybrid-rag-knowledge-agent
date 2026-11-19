@@ -3,6 +3,7 @@
 import logging
 
 from threading import Lock
+from pathlib import PurePosixPath
 from time import perf_counter
 
 from fastapi import (
@@ -19,6 +20,8 @@ from api.schemas import (
     ChatRequest,
     ChatResponse,
     KnowledgeBaseId,
+    SourceResponse,
+    ToolCallResponse,
 )
 from api.security import require_api_key
 from storage.sqlite_store import SQLiteStore
@@ -192,6 +195,9 @@ def chat(
 
                     agent_response = current_agent.chat_detailed(
                         request.message,
+                        knowledge_only=(
+                            request.chat_mode == "knowledge"
+                        ),
                         raise_errors=True,
                     )
 
@@ -200,6 +206,9 @@ def chat(
                 with agent_lock:
                     agent_response = agent.chat_detailed(
                         request.message,
+                        knowledge_only=(
+                            request.chat_mode == "knowledge"
+                        ),
                         raise_errors=True,
                     )
 
@@ -263,8 +272,42 @@ def chat(
         trace.request_id
     )
 
+    # Agent 内部仅在 Grounding 通过后收集 sources。
+    # API 再进行成功状态与检索工具检查，避免失败响应泄露引用。
+    search_succeeded = any(
+        call.tool_name == "search_knowledge"
+        and call.success
+        for call in agent_response.tool_calls
+    )
+
+    grounded_sources = (
+        agent_response.sources
+        if agent_response.success and search_succeeded
+        else []
+    )
+
     return ChatResponse(
         success=agent_response.success,
         answer=agent_response.answer,
         duration_ms=trace.duration_ms,
+        sources=[
+            SourceResponse(
+                file_name=PurePosixPath(
+                    source.file_name.replace(
+                        "\\", "/"
+                    )
+                ).name,
+                chunk_id=source.chunk_id,
+            )
+            for source in grounded_sources
+        ],
+        tool_calls=[
+            ToolCallResponse(
+                tool_name=call.tool_name,
+                success=call.success,
+                error_type=call.error_type,
+            )
+            for call in agent_response.tool_calls
+        ],
+        error_type=agent_response.error_type,
     )

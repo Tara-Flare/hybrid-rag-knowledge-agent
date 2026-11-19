@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Sequence
 
 from dotenv import load_dotenv
@@ -29,7 +30,9 @@ class EmbeddingClient:
                 每次 API 请求最多处理多少条文本。
         """
 
-        load_dotenv()
+        load_dotenv(
+            dotenv_path=Path(__file__).resolve().parents[1] / ".env"
+        )
 
         api_key = os.getenv(
             "DASHSCOPE_API_KEY"

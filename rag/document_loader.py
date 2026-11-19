@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -146,6 +146,15 @@ class LocalDocumentLoader:
                 )
                 continue
 
-            documents.append(document)
+            # 来源路径相对于本知识库根目录，
+            # 不依赖当前服务器的绝对路径。
+            documents.append(
+                replace(
+                    document,
+                    source=file_path.relative_to(
+                        directory
+                    ).as_posix(),
+                )
+            )
 
         return documents

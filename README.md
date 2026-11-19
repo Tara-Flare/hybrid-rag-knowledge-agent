@@ -11,6 +11,7 @@
 - **可靠性校验**：Answerability 检验证据是否足以作答；Grounding 逐条核对生成答案中的事实，对不受支持的内容尝试一次重写及二次核验，仍不通过则拒答。
 - **多知识库**：`tech` 与 `company` 使用独立的知识源、索引和会话绑定；已通过真实 Qwen 跨库拒答案例。
 - **工程化**：FastAPI、Session TTL、会话级锁与 HTTP 409 冲突处理，以及 RequestTrace + SQLite 阶段耗时、Token 和错误记录。
+- **请求路由**：`chat_mode=general` 保留原有 Agent 行为；`chat_mode=knowledge` 强制走知识库检索流程。API 返回工具摘要和经过核验的引用。
 
 ## 技术栈
 
@@ -71,19 +72,15 @@ python -m pip install -r requirements.txt
 cp .env.example .env
 ```
 
-编辑 `.env`，填入自己的 API Key。项目如果没有自动加载 `.env`，可在可信的本地 shell 中加载：
-
-```bash
-set -a
-source .env
-set +a
-```
+编辑 `.env`，填写 `DASHSCOPE_API_KEY` 和 `DASHSCOPE_BASE_URL`。`QWEN_MODEL` 默认使用 `qwen-plus`；如聊天服务地址不同，可单独设置 `QWEN_BASE_URL`。客户端会从项目根目录加载 `.env`，无需将密钥写入源码。
 
 ### 构建索引
 
 GitHub 版本不上传本地数据库、聊天记录或生成的向量索引。运行 RAG 功能前，请先根据 `rag/knowledge_base_config.py` 的 `tech` / `company` 路径生成各自的索引和 Chunk 文件。
 
-> **待发布前核验**：`build_vector_index.py` 的命令行参数以及 `company` 索引的构建方式。确认后把准确命令补充到此处，勿直接假定单次构建会覆盖两个知识库。
+首次构建需要分别执行 `python build_vector_index.py --knowledge-base tech` 和 `python build_vector_index.py --knowledge-base company`。具体输出路径见文末索引重建说明。
+
+新建索引采用知识库目录内的相对来源路径；旧索引仍兼容读取。已有索引默认不会覆盖，且无需仅为路径调整重新调用 Embedding。
 
 ### 启动 API
 
@@ -97,8 +94,10 @@ python -m uvicorn api.main:app --host 127.0.0.1 --port 8000
 curl -X POST http://127.0.0.1:8000/chat \
   -H 'Content-Type: application/json' \
   -H 'X-API-Key: YOUR_DEV_API_KEY' \
-  -d '{"message":"请根据知识库解释 RAG"}'
+  -d '{"message":"请根据知识库解释 RAG","chat_mode":"knowledge"}'
 ```
+
+公司知识库请求需要同时指定 `knowledge_base_id="company"`、`session_id` 和 `chat_mode="knowledge"`。正常响应保留 `success`、`answer`、`duration_ms`，并新增 `sources`、`tool_calls`、`error_type`。其中 `sources` 只返回允许公开的文件名及 Chunk ID，不包含服务器绝对路径。
 
 ## 自动化测试
 
@@ -110,7 +109,7 @@ python -m pytest tests/ -q -rs \
   --ignore=tests/test_langgraph_rag.py
 ```
 
-2026-11-17 开发环境的最近一次结果：**159 passed，1 skipped，0 failed**。跳过原因是 `company` 索引已存在；这不是全新环境测试结果。
+2026-11-19 在原有 `agent` 开发环境运行上述测试选择范围，结果为：**175 passed，1 skipped，0 failed**。其中 4 个 LangGraph 实验测试文件被显式排除；跳过项是 `company` 索引已存在。该结果不代表干净环境安装或全部实验性测试均已通过。
 
 ## 检索消融实验
 
@@ -125,7 +124,7 @@ python -m pytest tests/ -q -rs \
 
 LLM Rerank 提高了首个相关证据的排序，但在这组数据中未增加 Top-3 事实覆盖，且成本和延迟明显更高。原始实验摘要位于本地 `eval/results/ablation/retrieval_ablation_20261117T120408_173107Z.summary.json`；如不公开结果文件，建议将公开版评测摘要写入 `docs/evaluation.md`。
 
-**局限**：标签状态为 `auto_migrated_needs_human_review`，属于待人工复核的开发评测，不能据此声称生产性能。
+**局限**：历史消融指标来自 2026-11-17 的开发实验。当前匹配的标签报告状态为 `auto_matched_needs_review`，数据集及 Chunk 哈希校验通过，但标签尚未人工审核。不能将该结果描述为正式基准测试或生产性能。
 
 ## 真实演示场景
 

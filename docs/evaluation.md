@@ -8,7 +8,9 @@
 - 挑战语料：`eval/challenge_corpus/company_v1_draft/`
 - 最新实验摘要（位于本地、当前被 `.gitignore` 排除）：`eval/results/ablation/retrieval_ablation_20261117T120408_173107Z.summary.json`
 - 评估范围：14 道可回答开发问题；标注事实总数 16。
-- 标注状态：`auto_migrated_needs_human_review`，需人工复核。
+- 当前匹配的标签报告：`eval/results/ablation/company_dev_v1_relevance_audit_20261117T110549_555511Z.json`（本地文件，默认不提交 Git）。
+- 当前标签状态：`auto_matched_needs_review`，需人工复核。
+- 2026-11-19 已验证当前标签报告与开发数据集、company Chunk 文件的 SHA256 一致；16 道题中 14 道可回答，16/16 个 Gold Facts 已完成自动映射。
 - 最终 Top-K：3；Dense 与 BM25 候选数各 5；RRF 参数 60；重排模型 `qwen-plus`。
 - 对比：Dense、BM25、Hybrid RRF、Hybrid RRF + LLM Rerank。
 
@@ -41,7 +43,9 @@
 
 项目保留 `eval/retrieval_ablation.py`、数据集、标签和挑战语料。当前 GitHub 整理方案排除了生成的 `.npz` 索引和 `eval/results/` 历史输出。因此，重新运行前需要先重建挑战语料的索引，并核对评测脚本的 CLI 参数、模型 API Key 与数据路径。
 
-当前没有证据证明全新环境已可一键复现实验；在核对构建命令并完成干净环境验证前，不应对外宣称“开箱即复现”。
+当前没有证据证明全新环境已可一键复现实验；在完成干净环境验证前，不应对外宣称“开箱即复现”。
+
+特别注意：旧草稿标签 `eval/challenge_corpus/company_v1_draft/relevance_labels.draft.json` 的 Chunk 哈希与当前索引不一致，不能混用于当前评测。新建索引的来源路径已改为相对路径，重建后 Chunk JSON 哈希也可能变化。需要重新审核标签版本，而不是跳过 SHA256 校验或直接复用历史指标。
 
 **实验局限：** 开发集较小且非盲测；标签待人工复核；只覆盖可回答开发问题；没有统计完整 Agent 生成的端到端时延；Rerank 可能因供应端、负载和模型版本产生波动。
 

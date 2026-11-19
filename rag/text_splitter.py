@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from rag.document_loader import SourceDocument
@@ -74,6 +75,19 @@ class CharacterTextSplitter:
         if not text:
             return []
 
+        # 顶层文档保持旧 ID 格式。
+        # 嵌套文档包含相对目录，避免同名文件冲突。
+        source_path = Path(document.source)
+
+        chunk_key = (
+            source_path.as_posix()
+            if (
+                not source_path.is_absolute()
+                and len(source_path.parts) > 1
+            )
+            else document.file_name
+        )
+
         chunks: list[DocumentChunk] = []
 
         step = (
@@ -96,8 +110,7 @@ class CharacterTextSplitter:
                 chunks.append(
                     DocumentChunk(
                         chunk_id=(
-                            f"{document.file_name}"
-                            f"::chunk-{chunk_index}"
+                            f"{chunk_key}::chunk-{chunk_index}"
                         ),
                         content=chunk_text,
                         source=document.source,

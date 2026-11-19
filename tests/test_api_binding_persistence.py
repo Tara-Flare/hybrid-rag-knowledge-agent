@@ -20,6 +20,7 @@ class FakeAgent:
         self,
         message,
         *,
+        knowledge_only=False,
         raise_errors=False,
     ):
         return AgentResponse(

@@ -1,7 +1,7 @@
 # 系统架构与核心执行链路
 
 > 项目：基于混合 RAG 与可靠性校验的可配置知识库 Agent
-> 状态：依据 2026-11-17 已验收源码、测试与真实问答记录整理。
+> 状态：依据 2026-11-19 开发环境测试、真实 Qwen 问答及现有源码整理。
 
 ## 1. 目标与设计边界
 
@@ -80,6 +80,23 @@ RRF 用排名而非不同模型的原始分数进行融合，有利于组合语�
 - `RequestTrace.status="success"` 表示 **HTTP/执行请求正常结束**，不代表 Agent 业务成功；`agent_execution.outcome="agent_failure"` 可记录业务失败。
 - 可观测阶段包括 `llm_call`、`hybrid_retrieval`、`llm_rerank`、`answerability_check`、`grounding_check`、`grounding_rewrite`、`tool_execution`，以及模型 Token 用量采集。
 
-## 7. 已知工程边界
+## 7. API 路由与结构化响应
 
-本项目在单机开发环境中已完成 166 项自动化测试（另有 1 项因已有 company 索引而跳过），并验证了真实 Qwen 的双知识库隔离与拒答。尚未证明全新克隆环境可直接运行、生产级吞吐能力、复杂权限管理或分布式锁的一致性。
+`/chat` 支持 `chat_mode`：
+
+- `general`：默认模式，保留已有 Auto 工具选择及显式知识请求识别逻辑。
+- `knowledge`：向 Agent 传递 `knowledge_only=True`，强制启动知识库检索流程。
+
+`knowledge_base_id` 由调用方选择，`company` 请求需要 `session_id`。
+Session 知识库绑定仍由会话管理器约束。
+
+API 响应保留 `success`、`answer`、`duration_ms`，
+新增 `sources`、`tool_calls`、`error_type`。
+来源来自 Agent 的 Grounding 支持记录；API 不返回内部来源路径和检索分数。
+
+新建索引使用知识库相对路径，旧索引仍可加载。
+由于 Chunk JSON 字节内容会变化，新建索引不保证与历史评测标签的 SHA256 一致。
+
+## 8. 已知工程边界
+
+本项目在单机开发环境选定测试范围内通过 175 项自动化测试（另有 1 项因已有 company 索引而跳过），并验证了真实 Qwen 的双知识库隔离与拒答。尚未证明全新克隆环境可直接运行、生产级吞吐能力、复杂权限管理或分布式锁的一致性。

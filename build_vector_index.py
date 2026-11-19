@@ -85,6 +85,14 @@ def build_index(
     if not chunks:
         raise ValueError("没有生成有效 Chunk")
 
+    chunk_ids = [chunk.chunk_id for chunk in chunks]
+
+    if len(chunk_ids) != len(set(chunk_ids)):
+        raise ValueError(
+            "生成了重复 Chunk ID，"
+            "请检查知识库中是否存在冲突的文档路径"
+        )
+
     print(f"Chunk数量：{len(chunks)}")
 
     # 5. 生成 Embedding

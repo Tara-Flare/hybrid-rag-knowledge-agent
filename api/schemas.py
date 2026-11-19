@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 
 KnowledgeBaseId = Literal["tech", "company"]
+ChatMode = Literal["general", "knowledge"]
 
 
 class ChatRequest(BaseModel):
@@ -30,6 +31,25 @@ class ChatRequest(BaseModel):
         default="tech",
         description="选择的知识库，默认 tech",
     )
+    chat_mode: ChatMode = Field(
+        default="general",
+        description="general 为普通 Agent；knowledge 为严格知识库问答",
+    )
+
+
+class SourceResponse(BaseModel):
+    """已验证的知识库引用，不包含服务器路径。"""
+
+    file_name: str
+    chunk_id: str
+
+
+class ToolCallResponse(BaseModel):
+    """安全的工具调用摘要，不包含调用参数。"""
+
+    tool_name: str
+    success: bool
+    error_type: str | None = None
 
 
 class ChatResponse(BaseModel):
@@ -38,3 +58,13 @@ class ChatResponse(BaseModel):
     success: bool
     answer: str
     duration_ms: float
+
+    sources: list[SourceResponse] = Field(
+        default_factory=list
+    )
+
+    tool_calls: list[ToolCallResponse] = Field(
+        default_factory=list
+    )
+
+    error_type: str | None = None

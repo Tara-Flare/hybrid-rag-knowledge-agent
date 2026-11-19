@@ -100,6 +100,7 @@ def test_chat_success():
 
         mock_chat.assert_called_once_with(
             "你好",
+            knowledge_only=False,
             raise_errors=True,
         )
 
@@ -133,6 +134,7 @@ def test_chat_agent_exception():
     # 确保 Agent 函数确实被调用过一次。
     mock_chat.assert_called_once_with(
             "你好",
+            knowledge_only=False,
             raise_errors=True,
         )
 
@@ -197,6 +199,7 @@ def test_chat_with_session_id():
     # 验证对应 Agent 接收了正确的消息
     mock_agent.chat_detailed.assert_called_once_with(
         "你好",
+        knowledge_only=False,
         raise_errors=True,
     )
 
@@ -337,3 +340,77 @@ def test_chat_requires_api_key(monkeypatch):
 
     assert response.status_code == 401
     mock_chat.assert_not_called()
+
+def test_chat_mode_knowledge_without_session():
+    """知识库模式应传递 knowledge_only=True。"""
+    with patch(
+        "api.main.agent.chat_detailed",
+        return_value=AgentResponse(
+            success=True,
+            answer="模拟知识库回答",
+        ),
+    ) as mock_chat:
+        response = client.post(
+            "/chat",
+            json={
+                "message": "解释 RAG",
+                "chat_mode": "knowledge",
+            },
+            headers=AUTH_HEADERS,
+        )
+
+    assert response.status_code == 200
+    mock_chat.assert_called_once_with(
+        "解释 RAG",
+        knowledge_only=True,
+        raise_errors=True,
+    )
+
+
+def test_chat_mode_knowledge_with_session():
+    """company 知识库的严格模式应正确传递。"""
+    with patch(
+        "api.main.session_manager.use_agent"
+    ) as mock_use_agent:
+        mock_agent = (
+            mock_use_agent.return_value.__enter__.return_value
+        )
+        mock_agent.chat_detailed.return_value = AgentResponse(
+            success=True,
+            answer="模拟年假制度回答",
+        )
+
+        response = client.post(
+            "/chat",
+            json={
+                "message": "星桥科技员工年假怎么申请？",
+                "session_id": "route_test_001",
+                "knowledge_base_id": "company",
+                "chat_mode": "knowledge",
+            },
+            headers=AUTH_HEADERS,
+        )
+
+    assert response.status_code == 200
+    mock_use_agent.assert_called_once_with(
+        "route_test_001", "company"
+    )
+    mock_agent.chat_detailed.assert_called_once_with(
+        "星桥科技员工年假怎么申请？",
+        knowledge_only=True,
+        raise_errors=True,
+    )
+
+
+def test_invalid_chat_mode():
+    """非法业务模式应返回 HTTP 422。"""
+    response = client.post(
+        "/chat",
+        json={
+            "message": "你好",
+            "chat_mode": "invalid",
+        },
+        headers=AUTH_HEADERS,
+    )
+
+    assert response.status_code == 422
